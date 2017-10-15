@@ -1,10 +1,6 @@
-{
-  "language": "java",
-  "sudo": "enabled",
-  "group": "stable",
-  "dist": "trusty",
-  "os": "linux"
-}
+language: "java"
+before_install:
+ - chmod +x gradlew
 notifications:
   webhooks:
     urls:
