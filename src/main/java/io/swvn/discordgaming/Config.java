@@ -19,7 +19,7 @@ import java.io.File;
  */
 public class Config {
 
-    static ConfigMap pull(){
+    public static ConfigMap pull(){
 
         try{
 
@@ -34,6 +34,24 @@ public class Config {
             exception.printStackTrace();
             Sentry.capture(exception);
             return new ConfigMap();
+
+        }
+    }
+
+    public static String prefix(){
+        try{
+
+            ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+            File configFile = new File("config.yml");
+
+            return mapper.readValue(configFile, ConfigMap.class).prefix;
+
+
+        } catch(Exception exception){
+
+            exception.printStackTrace();
+            Sentry.capture(exception);
+            return new ConfigMap().prefix;
 
         }
     }

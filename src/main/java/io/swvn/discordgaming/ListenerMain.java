@@ -1,5 +1,6 @@
 package io.swvn.discordgaming;
 
+import io.swvn.discordgaming.commands.eval;
 import io.swvn.discordgaming.commands.test;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -11,10 +12,11 @@ public class ListenerMain extends ListenerAdapter {
     public void startup(){
 
         commands = new Command[]{
-             new test()
+                new test(),
+                new eval(),
         };
 
-        System.out.println("DONE");
+        System.out.println("COMMANDS LOADED");
     }
 
     @Override
@@ -28,7 +30,6 @@ public class ListenerMain extends ListenerAdapter {
         isCommand = (messageRaw.startsWith(prefix));
 
         if(isCommand){
-            System.out.println("test");
             String invoking;
 
             invoking = messageRaw
