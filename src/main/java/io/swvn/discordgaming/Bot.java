@@ -7,30 +7,40 @@
 
 package io.swvn.discordgaming;
 
+import io.sentry.Sentry;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
-
-import javax.security.auth.login.LoginException;
 
 /**
  * @author swvn9
  */
 public class Bot {
 
-    static JDA jda;
+    private static JDA jda;
+
+    private static String ENV;
+    private static String DSN;
+    private static String TOKEN;
 
     public static void main(String[] args){
 
+        TOKEN = Config.pull().getToken();
+        DSN = Config.pull().getDsn();
+        ENV = Config.pull().getEnv();
+
         try{
 
+            Sentry.init(DSN);
+
             jda = new JDABuilder(AccountType.BOT)
-                    .setToken(args[0])
-                    .buildAsync();
+                    .setToken(TOKEN)
+                    .buildBlocking();
 
-        } catch (LoginException | RateLimitedException exception) {
+        } catch (Exception exception) {
 
+            exception.printStackTrace();
+            Sentry.capture(exception);
 
         }
 
