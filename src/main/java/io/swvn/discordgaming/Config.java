@@ -25,34 +25,45 @@ public class Config {
 
             ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
             File configFile = new File("config.yml");
+
             return mapper.readValue(configFile, ConfigMap.class);
+
 
         } catch(Exception exception){
 
             exception.printStackTrace();
             Sentry.capture(exception);
             return new ConfigMap();
+
         }
     }
 
     @SuppressWarnings("unused")
-    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonIgnoreProperties(ignoreUnknown = false)
     static class ConfigMap {
-        private String dsn = "";
-        private String token = "";
-        private String env = "testing";
+        String dsn;
+        String token;
+        String env = "test";
+        String prefix = "!";
 
-        String getDsn() {
+        public String getDsn() {
             return dsn;
         }
 
-        String getToken() {
+        public String getToken() {
             return token;
         }
 
-        String getEnv() {
+        public String getEnv() {
             return env;
         }
+
+        public String getPrefix(){
+            if("test".equals(env))
+                return ">";
+            return prefix;
+        }
+
     }
 
 }

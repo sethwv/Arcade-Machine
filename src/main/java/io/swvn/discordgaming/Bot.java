@@ -12,6 +12,8 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 
+import java.util.EventListener;
+
 /**
  * @author swvn9
  */
@@ -33,8 +35,13 @@ public class Bot {
 
             Sentry.init(DSN);
 
+            ListenerMain commandListener;
+            commandListener = new ListenerMain();
+            commandListener.startup();
+
             jda = new JDABuilder(AccountType.BOT)
                     .setToken(TOKEN)
+                    .addEventListener(commandListener)
                     .buildBlocking();
 
         } catch (Exception exception) {
