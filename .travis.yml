@@ -1,12 +1,7 @@
-language: "java"
-before_install:
- - chmod +x gradlew
-notifications:
-  webhooks:
-    urls:
-      - WEBHOOK_URL
-    on_success: change # default: always
-    on_failure: always # default: always
-    on_start: change   # default: never
-    on_cancel: always # default: always
-    on_error: always # default: always
+{
+  "language": "java",
+  "sudo": "enabled",
+  "group": "stable",
+  "dist": "trusty",
+  "os": "linux"
+}
