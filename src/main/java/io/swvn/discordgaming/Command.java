@@ -28,12 +28,18 @@ import java.util.Arrays;
 public abstract class Command {
 
     //command information
-    protected String term = "none";
-    protected String[] alias = new String[0];
+    public String term = "none";
+    public String[] alias = new String[0];
+    public String usage = "";
+    public String description = "";
     protected Permission[] perms = new Permission[0];
     protected boolean restricted = true;
+    public boolean disabled = false;
+
 
     //command-flow info
+    protected String content;
+    protected String[] args;
     protected Message message;
     protected User author;
     protected TextChannel channel;
@@ -52,6 +58,11 @@ public abstract class Command {
                 .trim()
                 .split(" ")[0];
         this.jda        = event.getJDA();
+        this.content = message.getRawContent()
+                .replaceFirst(Config.prefix()+invoking,"").trim();
+        this.args = content.split(" ");
+
+        Bot.running = this;
 
         if(this.permCheck())
             this.command();
@@ -62,7 +73,7 @@ public abstract class Command {
         this.respond("This command is empty!");
     }
     protected void cleanup(){
-        //nothing here yet
+        Bot.running = null;
     }
 
     //command utility methods
@@ -81,16 +92,17 @@ public abstract class Command {
         };
         return Arrays.asList(superUser).contains(author.getIdLong());
     }
-
     protected void respond(String content){
         this.channel.sendMessageFormat("%s",content).queue();
     }
     protected void respond(MessageEmbed content){
         this.channel.sendMessage(content).queue();
     }
-    void log(){
 
+    void log(){
+        //nothing yet
     }
+
     protected static Color colour(String in, int x, int y) {
         try{
             File file = new File("temp/sample.png");

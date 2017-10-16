@@ -11,6 +11,7 @@ import io.sentry.Sentry;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.Game;
 
 import java.util.EventListener;
 
@@ -19,7 +20,10 @@ import java.util.EventListener;
  */
 public class Bot {
 
-    private static JDA jda;
+    public static JDA jda;
+
+    public static Command running;
+    public static ListenerMain listener;
 
     private static String ENV;
     private static String DSN;
@@ -35,14 +39,16 @@ public class Bot {
 
             Sentry.init(DSN);
 
-            ListenerMain commandListener;
-            commandListener = new ListenerMain();
-            commandListener.startup();
+            listener = new ListenerMain();
+            listener.startup();
 
             jda = new JDABuilder(AccountType.BOT)
                     .setToken(TOKEN)
-                    .addEventListener(commandListener)
+                    .addEventListener(listener)
                     .buildBlocking();
+            jda.getPresence().setGame(Game.of(
+                    "\uD83C\uDFAE swvn.io/dg","http://twitch.tv/discordapp"
+            ));
 
         } catch (Exception exception) {
 

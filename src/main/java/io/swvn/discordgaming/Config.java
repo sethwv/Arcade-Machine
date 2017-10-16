@@ -44,14 +44,14 @@ public class Config {
             ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
             File configFile = new File("config.yml");
 
-            return mapper.readValue(configFile, ConfigMap.class).prefix;
+            return mapper.readValue(configFile, ConfigMap.class).getPrefix();
 
 
         } catch(Exception exception){
 
             exception.printStackTrace();
             Sentry.capture(exception);
-            return new ConfigMap().prefix;
+            return new ConfigMap().getPrefix();
 
         }
     }

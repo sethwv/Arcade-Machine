@@ -16,9 +16,17 @@ import net.dv8tion.jda.core.Permission;
 public class test extends Command{
     public test(){
         this.term = "test";
+        this.description = "REEEEEEEEEEEEEEEEEEEEEEE NORMIES REEEEEEEEEEEEEEEEEEEEEEE\n#(Test command)";
         this.alias = new String[]{"test2"};
+        this.restricted = false;
         this.perms = new Permission[]{
-                Permission.ADMINISTRATOR
+                Permission.MESSAGE_WRITE,
+                Permission.MESSAGE_READ
         };
+    }
+
+    @Override
+    protected void command(){
+        respond("REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
     }
 }
