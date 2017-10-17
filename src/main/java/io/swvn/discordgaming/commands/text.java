@@ -5,62 +5,59 @@
  *  of the MIT license.  See the LICENSE file for details.
 */
 
-package io.swvn.discordgaming;
+package io.swvn.discordgaming.commands;
 
-import io.swvn.discordgaming.commands.*;
-import net.dv8tion.jda.core.entities.ChannelType;
-import net.dv8tion.jda.core.entities.TextChannel;
+import io.swvn.discordgaming.Command;
+import io.swvn.discordgaming.Config;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.core.entities.Icon;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
-import static java.awt.Color.WHITE;
 import static java.awt.Color.red;
+import static java.awt.Color.white;
 
 /**
  * @author swvn9
  */
-public class ListenerMain extends ListenerAdapter {
-
-    public Command[] commands;
-
-    public void startup(){
-
-        commands = new Command[]{
-                new help(),
-
-                new test(),
-                new text(),
-
-                new eval(),
-                new avatar(),
-
-                //Empty space in the commands array
-                null,
-                null,
-                null,
-                null,
+public class text extends Command{
+    public text(){
+        this.term = "text";
+        this.usage = "[hex] <message>";
+        this.alias = new String[]{};
+        this.description = "Generate an image from a string of text";
+        this.restricted = false;
+        this.perms = new Permission[]{
+                Permission.ADMINISTRATOR
         };
-
-        System.out.println("COMMANDS LOADED");
     }
 
     @Override
-    public void onGuildMemberJoin(GuildMemberJoinEvent event){
-        if(!event.getGuild().getId().equals("369683790404124674")) return;
-        String content = "Welcome, "+event.getMember().getEffectiveName()+"#"+event.getUser().getDiscriminator();
+    protected void command(){
+        content = message.getStrippedContent().replaceFirst(Config.prefix()+invoking, "").trim();
+        String text = content.replaceFirst(args[0],"").trim();
+        Color selectedColor = null;
 
+        try{
+            Color.decode(args[0]);
+        } catch (Exception ignored){
+            text = content;
+            selectedColor = white;
+        }
+        /*
+           I was far too lazy to write this text-generation myself,
+           source: https://stackoverflow.com/questions/18800717/convert-text-content-to-image
+         */
         BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = img.createGraphics();
         Font font = new Font("Helvetica", Font.PLAIN, 182);
         g2d.setFont(font);
         FontMetrics fm = g2d.getFontMetrics();
-        int width = fm.stringWidth(content);
+        int width = fm.stringWidth(text);
         int height = fm.getHeight();
         g2d.dispose();
 
@@ -76,8 +73,8 @@ public class ListenerMain extends ListenerAdapter {
         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         g2d.setFont(font);
         fm = g2d.getFontMetrics();
-        g2d.setColor(WHITE);
-        g2d.drawString(content, 0, fm.getAscent());
+        g2d.setColor(selectedColor);
+        g2d.drawString(text, 0, fm.getAscent());
         g2d.dispose();
 
         try {
@@ -118,51 +115,7 @@ public class ListenerMain extends ListenerAdapter {
 
         InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
 
-        TextChannel channel = event.getJDA().getTextChannelById("369683790827618305");
         channel.sendFile(inputStream, "Combined.png", null).queue();
     }
 
-    @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
-        if(event.getAuthor().isBot()) return;
-        if(!event.getChannel().getType().equals(ChannelType.TEXT)) return;
-        
-        boolean isCommand;
-        String prefix = Config.pull().getPrefix();
-        String messageRaw;
-
-        messageRaw = event.getMessage().getRawContent();
-        isCommand = (messageRaw.startsWith(prefix));
-
-        if(isCommand){
-            String invoking;
-
-            invoking = messageRaw
-                    .replaceFirst(prefix,"")
-                    .trim()
-                    .split(" ")[0];
-
-            for(Command command : commands){
-
-                if(null==command) continue;
-
-                if(!command.disabled){
-
-                    if(invoking.equals(command.term)){
-                        command.run(event);
-                        return;
-                    }
-
-                    for(String alias : command.alias){
-                        if(invoking.equals(alias)){
-                            command.run(event);
-                            return;
-                        }
-                    }
-
-                }
-
-            }
-        }
-    }
 }

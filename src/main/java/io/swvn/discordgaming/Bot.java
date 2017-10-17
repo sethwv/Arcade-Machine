@@ -47,6 +47,7 @@ public class Bot {
                     .setToken(TOKEN)
                     .addEventListener(listener)
                     .buildBlocking();
+
             jda.getPresence().setGame(Game.of(
                     "\uD83C\uDFAE swvn.io/dg"
             ));

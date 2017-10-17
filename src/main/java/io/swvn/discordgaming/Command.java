@@ -54,13 +54,13 @@ public abstract class Command {
         this.channel    = event.getTextChannel();
         this.guild      = event.getGuild();
         this.invoking   = message.getRawContent()
-                .replaceFirst(Config.prefix(),"")
-                .trim()
-                .split(" ")[0];
+                            .replaceFirst(Config.prefix(),"")
+                            .trim()
+                            .split(" ")[0];
         this.jda        = event.getJDA();
-        this.content = message.getRawContent()
-                .replaceFirst(Config.prefix()+invoking,"").trim();
-        this.args = content.split(" ");
+        this.content    = message.getRawContent()
+                            .replaceFirst(Config.prefix()+invoking,"").trim();
+        this.args       = content.split(" ");
 
         Bot.running = this;
 
