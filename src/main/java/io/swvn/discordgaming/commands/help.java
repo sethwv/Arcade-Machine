@@ -12,6 +12,7 @@ import io.swvn.discordgaming.Command;
 import io.swvn.discordgaming.Config;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
 
 import java.util.Objects;
 
@@ -21,7 +22,7 @@ import java.util.Objects;
 public class help extends Command{
     public help(){
         this.term = "help";
-        this.description = "A command which shows all of the bot's available commands regardless of permission.";
+        this.description = "A command which shows all of the bot's available commands";
         this.alias = new String[]{"?","h","commands"};
         this.restricted = false;
         this.perms = new Permission[]{
@@ -30,26 +31,33 @@ public class help extends Command{
         };
     }
 
+    protected boolean permCheck(User target, Permission[] permissions, Boolean restricted) {
+        Member member = guild.getMember(target);
+        return (member.hasPermission(permissions) && !restricted) || isSuperUser();
+    }
+
     @Override
     protected void command(){
         StringBuilder response = new StringBuilder();
-        response.append("**Loaded Commands**");
+        response.append("**Loaded commands that you can use**");
         response.append("```markdown\n");
         for(Command command : Bot.listener.commands){
             if(command!=null){
-                StringBuilder aliases = new StringBuilder();
-                for(String alias : command.alias)
-                    aliases.append("|")
-                            .append(alias);
-                if(!command.disabled)
-                    response.append(Config.prefix())
-                            .append(command.term)
-                            .append(aliases.toString())
-                            .append(" ")
-                            .append(command.usage)
-                            .append("\n#")
-                            .append(command.description)
-                            .append("\n\n");
+                if(permCheck(author, command.perms, command.restricted)){
+                    StringBuilder aliases = new StringBuilder();
+                    for(String alias : command.alias)
+                        aliases.append("|")
+                                .append(alias);
+                    if(!command.disabled)
+                        response.append(Config.prefix())
+                                .append(command.term)
+                                .append(aliases.toString())
+                                .append(" ")
+                                .append(command.usage)
+                                .append("\n#")
+                                .append(command.description)
+                                .append("\n\n");
+                }
             }
         }
 

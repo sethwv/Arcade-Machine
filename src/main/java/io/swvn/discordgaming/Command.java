@@ -32,8 +32,8 @@ public abstract class Command {
     public String[] alias = new String[0];
     public String usage = "";
     public String description = "";
-    protected Permission[] perms = new Permission[0];
-    protected boolean restricted = true;
+    public Permission[] perms = new Permission[0];
+    public boolean restricted = true;
     public boolean disabled = false;
 
 

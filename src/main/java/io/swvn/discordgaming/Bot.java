@@ -11,6 +11,7 @@ import io.sentry.Sentry;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
 
 import java.util.EventListener;
@@ -47,8 +48,11 @@ public class Bot {
                     .addEventListener(listener)
                     .buildBlocking();
             jda.getPresence().setGame(Game.of(
-                    "\uD83C\uDFAE swvn.io/dg","http://twitch.tv/discordapp"
+                    "\uD83C\uDFAE swvn.io/dg"
             ));
+
+            if(!"prod".equals(ENV))
+                jda.getPresence().setStatus(OnlineStatus.IDLE);
 
         } catch (Exception exception) {
 

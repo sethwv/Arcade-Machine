@@ -8,6 +8,7 @@
 package io.swvn.discordgaming;
 
 import io.swvn.discordgaming.commands.*;
+import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
@@ -25,6 +26,7 @@ public class ListenerMain extends ListenerAdapter {
 
                 new test(),
                 new eval(),
+                new avatar(),
 
                 //Empty space in the commands array
                 null,
@@ -39,6 +41,8 @@ public class ListenerMain extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if(event.getAuthor().isBot()) return;
+        if(!event.getChannel().getType().equals(ChannelType.TEXT)) return;
+        
         boolean isCommand;
         String prefix = Config.pull().getPrefix();
         String messageRaw;
