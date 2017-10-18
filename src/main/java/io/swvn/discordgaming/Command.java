@@ -25,6 +25,7 @@ import java.util.Arrays;
 /**
  * @author swvn9
  */
+@SuppressWarnings("WeakerAccess")
 public abstract class Command {
 
     //command information
@@ -34,7 +35,7 @@ public abstract class Command {
     public String description = "";
     public Permission[] perms = new Permission[0];
     public boolean restricted = true;
-    public boolean disabled = false;
+    public final boolean disabled = false;
 
 
     //command-flow info
@@ -99,11 +100,7 @@ public abstract class Command {
         this.channel.sendMessage(content).queue();
     }
 
-    void log(){
-        //nothing yet
-    }
-
-    protected static Color colour(String in, int x, int y) {
+    protected static Color colour(String in) {
         try{
             File file = new File("temp/sample.png");
             URL url = new URL(in);
@@ -112,7 +109,7 @@ public abstract class Command {
             conn.connect();
             FileUtils.copyInputStreamToFile(conn.getInputStream(), file);
             BufferedImage image = ImageIO.read(file);
-            int c = image.getRGB(x,y);
+            int c = image.getRGB(1, 1);
             int  red = (c & 0x00ff0000) >> 16;
             int  green = (c & 0x0000ff00) >> 8;
             int  blue = c & 0x000000ff;

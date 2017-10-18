@@ -8,11 +8,9 @@
 package io.swvn.discordgaming.commands;
 
 import groovy.util.Eval;
-import io.swvn.discordgaming.Bot;
 import io.swvn.discordgaming.Command;
 import io.swvn.discordgaming.Config;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.User;
 
 /**
  * @author swvn9
@@ -35,7 +33,7 @@ public class eval extends Command{
                     .replaceFirst(Config.prefix()+invoking,"")
                     .trim();
             EmbedBuilder out = new EmbedBuilder();
-            out.setColor(colour(jda.getSelfUser().getAvatarUrl(),1,1));
+            out.setColor(colour(jda.getSelfUser().getAvatarUrl()));
             out.addField("Input","```java\n" + content + "```",false);
             try{
                 String val = Eval.me(

@@ -36,7 +36,7 @@ public class avatar extends Command{
     protected void command(){
         BufferedImage baseImage = null;
         BufferedImage newImage;
-        Color selectedColor = null;
+        Color selectedColor;
 
         if(args.length>=2)
             selectedColor = Color.decode(args[1]);

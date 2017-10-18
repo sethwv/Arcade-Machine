@@ -10,13 +10,10 @@ package io.swvn.discordgaming.commands;
 import io.swvn.discordgaming.Command;
 import io.swvn.discordgaming.Config;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.core.entities.Icon;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
 import java.io.*;
 
@@ -42,12 +39,14 @@ public class text extends Command{
     protected void command(){
         content = message.getStrippedContent().replaceFirst(Config.prefix()+invoking, "").trim();
         String text = content.replaceFirst(args[0],"").trim();
-        Color selectedColor = null;
+        Color selectedColor;
+
+        String[] contentArr = text.split("%n");
 
         try{
             selectedColor = Color.decode(args[0]);
         } catch (Exception ignored){
-            text = content;
+            contentArr = content.split("%n");
             selectedColor = white;
         }
         /*
@@ -59,8 +58,8 @@ public class text extends Command{
         Font font = new Font("Uni Sans Heavy CAPS", Font.PLAIN, 182);
         g2d.setFont(font);
         FontMetrics fm = g2d.getFontMetrics();
-        int width = fm.stringWidth(text);
-        int height = fm.getHeight();
+        int width = fm.stringWidth(getLongestString(contentArr));
+        int height = fm.getHeight()*contentArr.length;
         g2d.dispose();
 
         img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -76,11 +75,17 @@ public class text extends Command{
         g2d.setFont(font);
         fm = g2d.getFontMetrics();
         g2d.setColor(selectedColor);
-        g2d.drawString(text, 0, fm.getAscent());
+        int lines = 0;
+        for(String s: contentArr){
+            g2d.drawString(s,0,fm.getAscent()+(182*lines));
+            lines++;
+        }
+        //g2d.drawString(text, 0, fm.getAscent());
+        //g2d.drawString(contentArr[1],0,fm.getAscent()+182);
         g2d.dispose();
 
         try {
-            ImageIO.write(img, "png", new File("Text.png"));
+            ImageIO.write(img, "png", new File("temp"+File.separator+"Text.png"));
             //channel.sendFile(new File("Text.png"),null).queue();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -91,7 +96,7 @@ public class text extends Command{
         BufferedImage imageTwo = null;
         try{
             imageOne = ImageIO.read(new File("iconbase1.png"));
-            imageTwo = ImageIO.read(new File("Text.png"));
+            imageTwo = ImageIO.read(new File("temp"+File.separator+"Text.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -119,11 +124,11 @@ public class text extends Command{
 
         //channel.sendFile(inputStream, "Combined.png", null).queue();
         try {
-            ImageIO.write(colorImage(ImageIO.read(inputStream),selectedColor), "png", new File("combined2.png"));
+            ImageIO.write(colorImage(ImageIO.read(inputStream),selectedColor), "png", new File("temp"+File.separator+"combined2.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        channel.sendFile(new File("combined2.png"), null).queue();
+        channel.sendFile(new File("temp"+File.separator+"combined2.png"), null).queue();
 
     }
 
@@ -142,6 +147,18 @@ public class text extends Command{
             }
         }
         return image;
+    }
+
+    private static String getLongestString(String[] array) {
+        int maxLength = 0;
+        String longestString = null;
+        for (String s : array) {
+            if (s.length() > maxLength) {
+                maxLength = s.length();
+                longestString = s;
+            }
+        }
+        return longestString;
     }
 
 }

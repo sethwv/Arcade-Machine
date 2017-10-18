@@ -11,16 +11,15 @@ import io.sentry.Sentry;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
-
-import java.util.EventListener;
 
 /**
  * @author swvn9
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class Bot {
 
+    @SuppressWarnings("WeakerAccess")
     public static JDA jda;
 
     public static Command running;

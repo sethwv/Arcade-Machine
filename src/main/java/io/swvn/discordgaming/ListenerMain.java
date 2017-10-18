@@ -25,6 +25,7 @@ import static java.awt.Color.red;
 /**
  * @author swvn9
  */
+@SuppressWarnings("ConstantConditions")
 public class ListenerMain extends ListenerAdapter {
 
     public Command[] commands;

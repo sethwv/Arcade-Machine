@@ -17,6 +17,7 @@ import java.io.File;
 /**
  * @author swvn9
  */
+@SuppressWarnings("ALL")
 public class Config {
 
     public static ConfigMap pull(){

@@ -14,11 +14,10 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 
-import java.util.Objects;
-
 /**
  * @author swvn9
  */
+@SuppressWarnings("ALL")
 public class help extends Command{
     public help(){
         this.term = "help";
