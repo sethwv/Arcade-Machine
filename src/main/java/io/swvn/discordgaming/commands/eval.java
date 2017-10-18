@@ -8,9 +8,11 @@
 package io.swvn.discordgaming.commands;
 
 import groovy.util.Eval;
+import io.swvn.discordgaming.Bot;
 import io.swvn.discordgaming.Command;
 import io.swvn.discordgaming.Config;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.User;
 
 /**
  * @author swvn9

@@ -42,7 +42,7 @@ public abstract class Command {
     protected String[] args;
     protected Message message;
     protected User author;
-    protected TextChannel channel;
+    public TextChannel channel;
     protected Guild guild;
     protected String invoking;
     protected JDA jda;

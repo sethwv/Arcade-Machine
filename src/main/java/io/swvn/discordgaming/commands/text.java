@@ -16,6 +16,8 @@ import net.dv8tion.jda.core.entities.Icon;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.IndexColorModel;
+import java.awt.image.WritableRaster;
 import java.io.*;
 
 import static java.awt.Color.red;
@@ -43,7 +45,7 @@ public class text extends Command{
         Color selectedColor = null;
 
         try{
-            Color.decode(args[0]);
+            selectedColor = Color.decode(args[0]);
         } catch (Exception ignored){
             text = content;
             selectedColor = white;
@@ -54,7 +56,7 @@ public class text extends Command{
          */
         BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = img.createGraphics();
-        Font font = new Font("Helvetica", Font.PLAIN, 182);
+        Font font = new Font("Uni Sans Heavy CAPS", Font.PLAIN, 182);
         g2d.setFont(font);
         FontMetrics fm = g2d.getFontMetrics();
         int width = fm.stringWidth(text);
@@ -104,7 +106,7 @@ public class text extends Command{
         Graphics2D canvas = combined.createGraphics();
         canvas.setPaint(red);
         //canvas.fillRect(0,0,width,height);
-        canvas.drawImage(imageOne, null, 0, 0);
+        canvas.drawImage(imageOne, null, 0, -30);
         canvas.drawImage(imageTwo, null, imageOne.getWidth(),0);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -115,7 +117,31 @@ public class text extends Command{
 
         InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
 
-        channel.sendFile(inputStream, "Combined.png", null).queue();
+        //channel.sendFile(inputStream, "Combined.png", null).queue();
+        try {
+            ImageIO.write(colorImage(ImageIO.read(inputStream),selectedColor), "png", new File("combined2.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        channel.sendFile(new File("combined2.png"), null).queue();
+
+    }
+
+    private static BufferedImage colorImage(BufferedImage image, Color toColor) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+        WritableRaster raster = image.getRaster();
+
+        for (int xx = 0; xx < width; xx++) {
+            for (int yy = 0; yy < height; yy++) {
+                int[] pixels = raster.getPixel(xx, yy, (int[]) null);
+                pixels[0] = toColor.getRed();
+                pixels[1] = toColor.getGreen();
+                pixels[2] = toColor.getBlue();
+                raster.setPixel(xx, yy, pixels);
+            }
+        }
+        return image;
     }
 
 }

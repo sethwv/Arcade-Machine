@@ -49,11 +49,8 @@ public class Bot {
                     .buildBlocking();
 
             jda.getPresence().setGame(Game.of(
-                    "\uD83C\uDFAE swvn.io/dg"
+                    "\uD83C\uDFAE","http://twitch.tv/discordapp"
             ));
-
-            if(!"prod".equals(ENV))
-                jda.getPresence().setStatus(OnlineStatus.IDLE);
 
         } catch (Exception exception) {
 

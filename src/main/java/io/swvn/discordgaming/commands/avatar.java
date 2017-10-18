@@ -26,7 +26,10 @@ public class avatar extends Command{
         this.alias = new String[]{"avatar2","icon"};
         this.description = "Match the bot's avatar to the highest granted role's colour." +
                 "\n#(Restricted to Super Admins)";
-        this.restricted = true;
+        this.restricted = false;
+        this.perms = new Permission[]{
+                Permission.ADMINISTRATOR
+        };
     }
 
     @Override
