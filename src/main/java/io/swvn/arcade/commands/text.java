@@ -5,10 +5,10 @@
  *  of the MIT license.  See the LICENSE file for details.
 */
 
-package io.swvn.discordgaming.commands;
+package io.swvn.arcade.commands;
 
-import io.swvn.discordgaming.Command;
-import io.swvn.discordgaming.Config;
+import io.swvn.arcade.Command;
+import io.swvn.arcade.Config;
 import net.dv8tion.jda.core.Permission;
 
 import javax.imageio.ImageIO;
@@ -24,6 +24,9 @@ import static java.awt.Color.white;
  * @author swvn9
  */
 public class text extends Command{
+
+    public int offset = 20;
+
     public text(){
         this.term = "text";
         this.usage = "[hex] <message>";
@@ -58,8 +61,13 @@ public class text extends Command{
         Font font = new Font("Uni Sans Heavy CAPS", Font.PLAIN, 182);
         g2d.setFont(font);
         FontMetrics fm = g2d.getFontMetrics();
-        int width = fm.stringWidth(getLongestString(contentArr));
-        int height = fm.getHeight()*contentArr.length;
+        int height;
+        if(contentArr.length==1)
+            height = 152*contentArr.length;
+        else
+            height = fm.getHeight()*contentArr.length;
+        int width = fm.stringWidth(getLongestString(contentArr)+20);
+
         g2d.dispose();
 
         img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -104,7 +112,7 @@ public class text extends Command{
         assert imageTwo != null;
 
         width = imageOne.getWidth() + imageTwo.getWidth()+50;
-        height = Math.max(imageOne.getHeight(),imageTwo.getHeight());
+        height = Math.max(imageOne.getHeight()-30,imageTwo.getHeight());
 
         BufferedImage combined = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
@@ -112,7 +120,7 @@ public class text extends Command{
         canvas.setPaint(red);
         //canvas.fillRect(0,0,width,height);
         canvas.drawImage(imageOne, null, 0, -30);
-        canvas.drawImage(imageTwo, null, imageOne.getWidth(),0);
+        canvas.drawImage(imageTwo, null, imageOne.getWidth(),offset);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 

@@ -5,9 +5,10 @@
  *  of the MIT license.  See the LICENSE file for details.
 */
 
-package io.swvn.discordgaming;
+package io.swvn.arcade;
 
-import io.swvn.discordgaming.commands.*;
+import io.sentry.Sentry;
+import io.swvn.arcade.commands.*;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
@@ -18,9 +19,19 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
+import java.util.List;
 
 import static java.awt.Color.WHITE;
 import static java.awt.Color.red;
+
+import static io.swvn.arcade.Bot.ENV;
 
 /**
  * @author swvn9
@@ -32,23 +43,31 @@ public class ListenerMain extends ListenerAdapter {
 
     public void startup(){
 
+        Bot.log(this.getClass(),"INFO",System.getProperty("os.name")+" ("+System.getProperty("os.version")+")");
+        Bot.log(this.getClass(),"INFO","Specified Environment is "+ENV);
+
         commands = new Command[]{
                 new help(),
 
-                new test(),
                 new text(),
 
                 new eval(),
                 new avatar(),
+                new edit(),
+                new var(),
 
-                //Empty space in the commands array
-                null,
-                null,
                 null,
                 null,
         };
 
-        System.out.println("COMMANDS LOADED");
+        Bot.log(this.getClass(),"INIT","Prod Commands Loaded.");
+
+        if(!"prod".equals(ENV)){
+            commands[commands.length-2] = new test();
+            commands[commands.length-1]   = new arcadeinfo();
+            Bot.log(this.getClass(),"INIT","Debug / Test Commands Loaded.");
+
+        }
     }
 
     @Override
@@ -166,4 +185,5 @@ public class ListenerMain extends ListenerAdapter {
             }
         }
     }
+
 }

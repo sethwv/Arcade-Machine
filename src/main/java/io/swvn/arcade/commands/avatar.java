@@ -5,9 +5,9 @@
  *  of the MIT license.  See the LICENSE file for details.
 */
 
-package io.swvn.discordgaming.commands;
+package io.swvn.arcade.commands;
 
-import io.swvn.discordgaming.Command;
+import io.swvn.arcade.Command;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Icon;
 
@@ -26,10 +26,7 @@ public class avatar extends Command{
         this.alias = new String[]{"avatar2","icon"};
         this.description = "Match the bot's avatar to the highest granted role's colour." +
                 "\n#(Restricted to Super Admins)";
-        this.restricted = false;
-        this.perms = new Permission[]{
-                Permission.ADMINISTRATOR
-        };
+        this.restricted = true;
     }
 
     @Override

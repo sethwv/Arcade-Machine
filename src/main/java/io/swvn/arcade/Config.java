@@ -5,7 +5,7 @@
  *  of the MIT license.  See the LICENSE file for details.
 */
 
-package io.swvn.discordgaming;
+package io.swvn.arcade;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -5,11 +5,11 @@
  *  of the MIT license.  See the LICENSE file for details.
 */
 
-package io.swvn.discordgaming.commands;
+package io.swvn.arcade.commands;
 
-import io.swvn.discordgaming.Bot;
-import io.swvn.discordgaming.Command;
-import io.swvn.discordgaming.Config;
+import io.swvn.arcade.Bot;
+import io.swvn.arcade.Command;
+import io.swvn.arcade.Config;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;

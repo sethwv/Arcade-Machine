@@ -5,13 +5,16 @@
  *  of the MIT license.  See the LICENSE file for details.
 */
 
-package io.swvn.discordgaming;
+package io.swvn.arcade;
 
 import io.sentry.Sentry;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author swvn9
@@ -25,7 +28,7 @@ public class Bot {
     public static Command running;
     public static ListenerMain listener;
 
-    private static String ENV;
+    protected static String ENV;
     private static String DSN;
     private static String TOKEN;
 
@@ -34,6 +37,10 @@ public class Bot {
         TOKEN = Config.pull().getToken();
         DSN = Config.pull().getDsn();
         ENV = Config.pull().getEnv();
+
+        Sentry.getContext().addExtra("ENV",ENV);
+
+        System.setProperty("java.awt.headless", "true");
 
         try{
 
@@ -58,6 +65,31 @@ public class Bot {
 
         }
 
+    }
+
+    public static void log(Class cl,String type,String message){
+        final String RESET = "\u001B[0m";
+
+        String COLOR = "\u001B[44m\u001B[30m";
+
+        if(type.toLowerCase().equals("info"))
+            COLOR = "\u001B[0m";
+
+        if(type.toLowerCase().equals("error"))
+            COLOR = "\u001B[41m\u001B[30m";
+
+        if(type.toLowerCase().equals("init"))
+            COLOR = "\u001B[42m\u001B[30m";
+
+        if(type.toLowerCase().equals("hook"))
+            COLOR = "\u001B[45m\u001B[30m";
+
+        if(type.toLowerCase().equals("cmd")){
+            COLOR = "\u001B[46m\u001B[30m";
+            type = "CMD ";
+        }
+
+        System.out.println(COLOR+"["+LocalTime.now().format(DateTimeFormatter.ofPattern("kk:mm:ss"))+"] ["+type.toUpperCase()+"] ["+cl.getName()+"]: "+message+RESET);
     }
 
 }

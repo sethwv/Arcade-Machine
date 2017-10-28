@@ -5,7 +5,7 @@
  *  of the MIT license.  See the LICENSE file for details.
 */
 
-package io.swvn.discordgaming;
+package io.swvn.arcade;
 
 import io.sentry.Sentry;
 import net.dv8tion.jda.core.JDA;
@@ -65,8 +65,10 @@ public abstract class Command {
 
         Bot.running = this;
 
-        if(this.permCheck())
+        if(this.permCheck()){
+            Bot.log(this.getClass(),"CMD","Executed by "+author.getName()+"#"+author.getDiscriminator()+" ("+author.getId()+")");
             this.command();
+        }
 
         this.cleanup();
     }

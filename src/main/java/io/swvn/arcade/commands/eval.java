@@ -5,11 +5,11 @@
  *  of the MIT license.  See the LICENSE file for details.
 */
 
-package io.swvn.discordgaming.commands;
+package io.swvn.arcade.commands;
 
 import groovy.util.Eval;
-import io.swvn.discordgaming.Command;
-import io.swvn.discordgaming.Config;
+import io.swvn.arcade.Command;
+import io.swvn.arcade.Config;
 import net.dv8tion.jda.core.EmbedBuilder;
 
 /**
@@ -37,12 +37,12 @@ public class eval extends Command{
             out.addField("Input","```java\n" + content + "```",false);
             try{
                 String val = Eval.me(
-                            "import io.swvn.discordgaming.*;\n" +
+                            "import io.swvn.arcade.*;\n" +
                             "import net.dv8tion.jda.core.*;\n" +
-                            "import static io.swvn.discordgaming.Bot.*;\n" +
-                            "import static io.swvn.discordgaming.Bot.jda;\n" +
-                            "import static io.swvn.discordgaming.Bot.running;\n" +
-                            "import static io.swvn.discordgaming.Bot.listener;\n" +
+                            "import static io.swvn.arcade.Bot.*;\n" +
+                            "import static io.swvn.arcade.Bot.jda;\n" +
+                            "import static io.swvn.arcade.Bot.running;\n" +
+                            "import static io.swvn.arcade.Bot.listener;\n" +
                             content).toString();
                 if(val!=null)
                     out.addField("Output","```java\n"+val+"```",false);
